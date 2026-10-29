@@ -21,6 +21,10 @@
     "url": "https://github.com/EvilIrving/pi-skills-toggle/issues"
   },
   "homepage": "https://github.com/EvilIrving/pi-skills-toggle#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "files": [
     "index.ts",
     "logic.ts",
