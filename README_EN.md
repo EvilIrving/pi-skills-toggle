@@ -1,4 +1,4 @@
-# pi-project-skill-toggle
+# pi-skills-toggle
 
 English | [简体中文](README.md)
 
@@ -12,7 +12,7 @@ Pi 1.4 resolves skills through the package manager, then `loadSkills` keeps the 
 
 ```text
 .pi/skills/<name>/SKILL.md
-.pi/skills/<name>/.pi-project-skill-toggle.json
+.pi/skills/<name>/.pi-skills-toggle.json
 ```
 
 The stub sets `disable-model-invocation: true`, so it wins name resolution and stays out of the model prompt. `/skill:<name>` manual invocation may still exist.
@@ -22,30 +22,32 @@ The stub sets `disable-model-invocation: true`, so it wins name resolution and s
 Global install:
 
 ```bash
-pi install npm:pi-project-skill-toggle
+pi install npm:pi-skills-toggle
 # or via Git repository:
-pi install git:github.com/EvilIrving/pi-project-skill-toggle
+pi install git:github.com/EvilIrving/pi-skills-toggle
 ```
 
 Project-local install:
 
 ```bash
-pi install npm:pi-project-skill-toggle --local
+pi install npm:pi-skills-toggle --local
 # or via Git repository:
-pi install git:github.com/EvilIrving/pi-project-skill-toggle --local
+pi install git:github.com/EvilIrving/pi-skills-toggle --local
 ```
 
 Local directory install:
 
 ```bash
-pi install ./path/to/pi-project-skill-toggle
+pi install ./path/to/pi-skills-toggle
 # or local directory for current project:
-pi install ./path/to/pi-project-skill-toggle --local
+pi install ./path/to/pi-skills-toggle --local
 ```
 
 After installing, reload Pi (`/reload` or restart), then run:
 
 ```text
+/skills-toggle
+# or alias:
 /project-skills
 ```
 
@@ -73,7 +75,7 @@ Requirement:
 
 ## Safety rules
 
-- Only creates or modifies managed files: `SKILL.md` and `.pi-project-skill-toggle.json`.
+- Only creates or modifies managed files: `SKILL.md` and `.pi-skills-toggle.json`.
 - Restoring deletes only those two managed files; the directory is removed only if empty.
 - Non-managed files or subdirectories (such as `references/` or `user.txt`) are never recursively deleted, and preserved files are reported in the UI.
 - Managed files are deleted or overwritten only when their SHA-256 hash matches the recorded state. Modified stubs are left untouched.

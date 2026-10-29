@@ -1,4 +1,4 @@
-# pi-project-skill-toggle
+# pi-skills-toggle
 
 [English](README_EN.md) | 简体中文
 
@@ -21,7 +21,7 @@ Pi 1.4 通过包管理器解析技能路径，再由 `loadSkills` 按路径优�
 
 ```text
 .pi/skills/<name>/SKILL.md
-.pi/skills/<name>/.pi-project-skill-toggle.json
+.pi/skills/<name>/.pi-skills-toggle.json
 ```
 
 桩文件包含 `disable-model-invocation: true` 配置项（指示模型在组装提示词时不要载入该技能）。在技能名称发生冲突时，项目桩文件因优先级更高而生效，同时该技能不会被加入模型的系统提示词。
@@ -33,30 +33,32 @@ Pi 1.4 通过包管理器解析技能路径，再由 `loadSkills` 按路径优�
 全局安装：
 
 ```bash
-pi install npm:pi-project-skill-toggle
+pi install npm:pi-skills-toggle
 # 或通过 Git 仓库安装：
-pi install git:github.com/EvilIrving/pi-project-skill-toggle
+pi install git:github.com/EvilIrving/pi-skills-toggle
 ```
 
 仅在当前项目安装：
 
 ```bash
-pi install npm:pi-project-skill-toggle --local
+pi install npm:pi-skills-toggle --local
 # 或通过 Git 仓库本地安装：
-pi install git:github.com/EvilIrving/pi-project-skill-toggle --local
+pi install git:github.com/EvilIrving/pi-skills-toggle --local
 ```
 
 本地目录安装：
 
 ```bash
-pi install ./path/to/pi-project-skill-toggle
+pi install ./path/to/pi-skills-toggle
 # 或本地项目安装：
-pi install ./path/to/pi-project-skill-toggle --local
+pi install ./path/to/pi-skills-toggle --local
 ```
 
 安装完成后，重新加载 Pi（执行 `/reload` 或重启终端），然后运行命令：
 
 ```text
+/skills-toggle
+# 或别名命令：
 /project-skills
 ```
 
@@ -84,7 +86,7 @@ pi install ./path/to/pi-project-skill-toggle --local
 
 ## 安全规则
 
-- 仅创建或更新由本插件管理的两个文件：`SKILL.md` 与 `.pi-project-skill-toggle.json`。
+- 仅创建或更新由本插件管理的两个文件：`SKILL.md` 与 `.pi-skills-toggle.json`。
 - 恢复技能时，仅删除上述两个管理文件。仅当技能目录变为空目录时，才会删除该目录。
 - 技能目录中若包含非管理文件或子目录（例如 `references/`、`user.txt` 等），绝不进行递归删除，并在界面提示保留的文件列表。
 - 仅在桩文件的 SHA-256 哈希值与记录匹配时，才允许删除或覆盖；若桩文件已被修改，则拒绝覆盖或删除。
