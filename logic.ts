@@ -14,8 +14,6 @@ import * as path from "node:path";
 
 export const MARKER_NAME = "pi-skills-toggle";
 export const MARKER_FILE = ".pi-skills-toggle.json";
-export const LEGACY_MARKER_NAME = "pi-project-skill-toggle";
-export const LEGACY_MARKER_FILE = ".pi-project-skill-toggle.json";
 export const SKILL_FILE = "SKILL.md";
 
 export type SkillOrigin = "user" | "agents" | "package" | "project" | "path";

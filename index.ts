@@ -3,9 +3,9 @@ import { getAgentDir } from "@earendil-works/pi-coding-agent";
 import { buildCatalog } from "./logic.ts";
 import { ProjectSkillsOverlay, type UiResult } from "./ui.ts";
 
-async function openPanel(ctx: ExtensionCommandContext): Promise<UiResult | undefined> {
+async function openPanel(ctx: ExtensionCommandContext, initialQuery = ""): Promise<UiResult | undefined> {
 	if (ctx.mode !== "tui") {
-		ctx.ui.notify("Use /project-skills in Pi's interactive TUI", "warning");
+		ctx.ui.notify("Use /skills in Pi's interactive TUI", "warning");
 		return undefined;
 	}
 
@@ -17,12 +17,11 @@ async function openPanel(ctx: ExtensionCommandContext): Promise<UiResult | undef
 	}
 
 	return ctx.ui.custom<UiResult>((tui, theme, keybindings, done) => {
-		return new ProjectSkillsOverlay(ctx.cwd, agentDir, catalog, theme, keybindings, tui, done);
+		return new ProjectSkillsOverlay(ctx.cwd, agentDir, catalog, theme, keybindings, tui, done, initialQuery);
 	}, {
 		overlay: true,
-			overlayOptions: {
+		overlayOptions: {
 			anchor: "center",
-			// Fixed 80% width panel; height still fills the viewport (see ui.ts computePanelTargetHeight).
 			width: "80%",
 			maxHeight: "96%",
 			minWidth: 40,
@@ -33,9 +32,9 @@ async function openPanel(ctx: ExtensionCommandContext): Promise<UiResult | undef
 }
 
 export default function skillToggle(pi: ExtensionAPI): void {
-	const handler = async (_args: string, ctx: ExtensionCommandContext) => {
+	const handler = async (args: string, ctx: ExtensionCommandContext) => {
 		try {
-			const result = await openPanel(ctx);
+			const result = await openPanel(ctx, typeof args === "string" ? args.trim() : "");
 			if (!result) return;
 			ctx.ui.notify(
 				`Project skill exclusions: ${result.excludedCount}. Run /reload (or restart) to apply.`,
@@ -46,13 +45,8 @@ export default function skillToggle(pi: ExtensionAPI): void {
 		}
 	};
 
-	pi.registerCommand("skills-toggle", {
+	pi.registerCommand("skills", {
 		description: "Exclude or restore global skills for this project only",
-		handler,
-	});
-
-	pi.registerCommand("project-skills", {
-		description: "Alias for /skills-toggle",
 		handler,
 	});
 }

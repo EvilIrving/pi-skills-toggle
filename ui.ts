@@ -92,6 +92,7 @@ export class ProjectSkillsPanel implements Component {
 		keybindings: KeybindingsManager,
 		tui: TUI,
 		done: (result: UiResult) => void,
+		initialQuery = "",
 	) {
 		this.projectDir = projectDir;
 		this.agentDir = agentDir;
@@ -100,6 +101,7 @@ export class ProjectSkillsPanel implements Component {
 		this.keybindings = keybindings;
 		this.tui = tui;
 		this.done = done;
+		this.query = initialQuery;
 		this.rebuildFlat();
 	}
 
@@ -427,8 +429,9 @@ export class ProjectSkillsOverlay implements Component {
 		keybindings: KeybindingsManager,
 		tui: TUI,
 		done: (result: UiResult) => void,
+		initialQuery = "",
 	) {
-		this.panel = new ProjectSkillsPanel(projectDir, agentDir, catalog, theme, keybindings, tui, done);
+		this.panel = new ProjectSkillsPanel(projectDir, agentDir, catalog, theme, keybindings, tui, done, initialQuery);
 		// userMessageBg is a solid theme panel background (same family as chat bubbles).
 		// Padding 2 keeps title/rows/footer comfortably inside the border.
 		this.box = new Box(2, 2, (text) => theme.bg("userMessageBg", text));
@@ -459,6 +462,7 @@ export function createProjectSkillsOverlay(
 	keybindings: KeybindingsManager,
 	tui: TUI,
 	done: (result: UiResult) => void = () => {},
+	initialQuery = "",
 ): ProjectSkillsOverlay {
-	return new ProjectSkillsOverlay(projectDir, agentDir, catalog, theme, keybindings, tui, done);
+	return new ProjectSkillsOverlay(projectDir, agentDir, catalog, theme, keybindings, tui, done, initialQuery);
 }
