@@ -33,7 +33,7 @@ Pi 1.4 通过包管理器解析技能路径，再由 `loadSkills` 按路径优�
 全局安装：
 
 ```bash
-pi install npm:pi-skills-toggle
+pi install npm:@light-cat/pi-skills-toggle
 # 或通过 Git 仓库安装：
 pi install git:github.com/EvilIrving/pi-skills-toggle
 ```
@@ -41,7 +41,7 @@ pi install git:github.com/EvilIrving/pi-skills-toggle
 仅在当前项目安装：
 
 ```bash
-pi install npm:pi-skills-toggle --local
+pi install npm:@light-cat/pi-skills-toggle --local
 # 或通过 Git 仓库本地安装：
 pi install git:github.com/EvilIrving/pi-skills-toggle --local
 ```

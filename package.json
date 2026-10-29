@@ -1,5 +1,5 @@
 {
-  "name": "pi-skills-toggle",
+  "name": "@light-cat/pi-skills-toggle",
   "version": "1.0.0",
   "description": "Per-project exclude/include of global Pi skills via local shadow stubs",
   "type": "module",
@@ -23,7 +23,7 @@
   "homepage": "https://github.com/EvilIrving/pi-skills-toggle#readme",
   "publishConfig": {
     "access": "public",
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org"
   },
   "files": [
     "index.ts",
@@ -34,7 +34,7 @@
     "LICENSE"
   ],
   "engines": {
-    "node": ">=22.19.0"
+    "node": ">=22"
   },
   "pi": {
     "extensions": [

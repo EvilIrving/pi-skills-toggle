@@ -22,7 +22,7 @@ The stub sets `disable-model-invocation: true`, so it wins name resolution and s
 Global install:
 
 ```bash
-pi install npm:pi-skills-toggle
+pi install npm:@light-cat/pi-skills-toggle
 # or via Git repository:
 pi install git:github.com/EvilIrving/pi-skills-toggle
 ```
@@ -30,7 +30,7 @@ pi install git:github.com/EvilIrving/pi-skills-toggle
 Project-local install:
 
 ```bash
-pi install npm:pi-skills-toggle --local
+pi install npm:@light-cat/pi-skills-toggle --local
 # or via Git repository:
 pi install git:github.com/EvilIrving/pi-skills-toggle --local
 ```
