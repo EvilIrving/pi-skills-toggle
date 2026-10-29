@@ -57,9 +57,7 @@ pi install ./path/to/pi-skills-toggle --local
 安装完成后，重新加载 Pi（执行 `/reload` 或重启终端），然后运行命令：
 
 ```text
-/skills-toggle
-# 或别名命令：
-/project-skills
+/skills
 ```
 
 ## 操作方式

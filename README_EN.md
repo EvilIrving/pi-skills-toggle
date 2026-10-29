@@ -46,9 +46,7 @@ pi install ./path/to/pi-skills-toggle --local
 After installing, reload Pi (`/reload` or restart), then run:
 
 ```text
-/skills-toggle
-# or alias:
-/project-skills
+/skills
 ```
 
 ## Usage
