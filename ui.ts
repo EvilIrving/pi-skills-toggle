@@ -299,16 +299,19 @@ export class ProjectSkillsPanel implements Component {
 	}
 
 	render(width: number): string[] {
-		if (this.cachedLines && this.cachedWidth === width) return this.cachedLines;
+		const termRows = this.termRows();
+		if (this.cachedLines && this.cachedWidth === width && this.cachedRows === termRows) {
+			return this.cachedLines;
+		}
 		const theme = this.theme;
-		const lines: string[] = [];
+		const header: string[] = [];
 
 		const title = theme.fg("accent", theme.bold("Project Skills"));
 		const stats = theme.fg(
 			"muted",
 			`${this.catalog.excludedCount} excluded · ${this.catalog.toggleableCount} toggleable`,
 		);
-		lines.push(truncateToWidth(padBetween(title, stats, width), width));
+		header.push(truncateToWidth(padBetween(title, stats, width), width));
 
 		const searchText = this.searching
 			? `/${this.query}█`
@@ -316,7 +319,7 @@ export class ProjectSkillsPanel implements Component {
 				? `/${this.query}`
 				: "/ to search";
 		const filterText = theme.fg("muted", filterLabel(this.filter));
-		lines.push(
+		header.push(
 			truncateToWidth(
 				padBetween(theme.fg(this.searching ? "accent" : "muted", searchText), filterText, width),
 				width,
@@ -324,20 +327,33 @@ export class ProjectSkillsPanel implements Component {
 		);
 
 		if (this.status) {
-			lines.push(truncateToWidth(theme.fg(this.statusIsError ? "error" : "success", this.status), width));
+			header.push(truncateToWidth(theme.fg(this.statusIsError ? "error" : "success", this.status), width));
 		} else {
-			lines.push(
-				truncateToWidth(
-					theme.fg("dim", "Project-local stubs · does not edit global skills"),
-					width,
-				),
+			header.push(
+				truncateToWidth(theme.fg("dim", "Project-local stubs · does not edit global skills"), width),
 			);
 		}
 
-		lines.push("");
+		header.push("");
 
-		const maxRows = Math.max(6, Math.min(16, width < 60 ? 8 : 14));
-		const bodyBudget = maxRows;
+		const hint = (key: string, label: string) => `${theme.fg("accent", key)} ${label}`;
+		const current = this.currentSkill();
+		const spaceLabel = !current?.toggleable ? "toggle" : current.excluded ? "enable" : "disable";
+		const hints = [
+			hint("space", spaceLabel),
+			hint("f", "filter"),
+			hint("/", "search"),
+			hint("r", "reload"),
+			hint("enter", "details"),
+			hint("esc", "close"),
+		].join(theme.fg("muted", " | "));
+		const footer = truncateToWidth(theme.fg("muted", hints), width);
+
+		// Fill the panel to the overlay's real content budget so Box bg and footer reach bottom.
+		const targetHeight = computePanelTargetHeight(termRows);
+		const bodyBudget = Math.max(1, targetHeight - PANEL_CHROME_LINES);
+
+		const body: string[] = [];
 		let start = 0;
 		if (this.selected >= 0) {
 			const approx = Math.max(0, this.selected - Math.floor(bodyBudget / 2));
@@ -348,7 +364,7 @@ export class ProjectSkillsPanel implements Component {
 		for (let i = start; i < this.flat.length && rendered < bodyBudget; i++) {
 			const row = this.flat[i]!;
 			if (row.kind === "header") {
-				lines.push(truncateToWidth(theme.fg("muted", row.title), width));
+				body.push(truncateToWidth(theme.fg("muted", row.title), width));
 				rendered++;
 				continue;
 			}
@@ -366,40 +382,30 @@ export class ProjectSkillsPanel implements Component {
 				// Prefer accent/bold over selectedBg so Box's opaque panel bg stays consistent.
 				line = theme.bold(line);
 			}
-			lines.push(truncateToWidth(line, width));
+			body.push(truncateToWidth(line, width));
 			rendered++;
 
 			if (this.expanded.has(skill.name)) {
-				lines.push(truncateToWidth(theme.fg("dim", `    ${skill.description}`), width));
+				if (rendered >= bodyBudget) break;
+				body.push(truncateToWidth(theme.fg("dim", `    ${skill.description}`), width));
 				rendered++;
-				lines.push(truncateToWidth(theme.fg("dim", `    ${skill.filePath}`), width));
+				if (rendered >= bodyBudget) break;
+				body.push(truncateToWidth(theme.fg("dim", `    ${skill.filePath}`), width));
 				rendered++;
 			}
 		}
 
 		if (this.flat.length === 0) {
-			lines.push(theme.fg("muted", "No skills match this filter"));
+			body.push(theme.fg("muted", "No skills match this filter"));
 		}
 
-		lines.push("");
-		const hint = (key: string, label: string) => `${theme.fg("accent", key)} ${label}`;
-		const current = this.currentSkill();
-		const spaceLabel = !current?.toggleable
-			? "toggle"
-			: current.excluded
-				? "enable"
-				: "disable";
-		const hints = [
-			hint("space", spaceLabel),
-			hint("f", "filter"),
-			hint("/", "search"),
-			hint("r", "reload"),
-			hint("enter", "details"),
-			hint("esc", "close"),
-		].join(theme.fg("muted", " | "));
-		lines.push(truncateToWidth(theme.fg("muted", hints), width));
+		// Pad the list region so the footer sits on the panel's bottom edge.
+		while (body.length < bodyBudget) body.push("");
+		if (body.length > bodyBudget) body.length = bodyBudget;
 
+		const lines = [...header, ...body, "", footer];
 		this.cachedWidth = width;
+		this.cachedRows = termRows;
 		this.cachedLines = lines.map((line) => truncateToWidth(line, width));
 		return this.cachedLines;
 	}

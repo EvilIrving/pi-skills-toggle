@@ -20,10 +20,10 @@ async function openPanel(ctx: ExtensionCommandContext): Promise<UiResult | undef
 		return new ProjectSkillsOverlay(ctx.cwd, agentDir, catalog, theme, keybindings, tui, done);
 	}, {
 		overlay: true,
-		overlayOptions: {
+			overlayOptions: {
 			anchor: "center",
-			// Near-max viewport with ~2-cell outer inset + framed chrome.
-			width: "98%",
+			// Fixed 80% width panel; height still fills the viewport (see ui.ts computePanelTargetHeight).
+			width: "80%",
 			maxHeight: "96%",
 			minWidth: 40,
 			margin: 2,
@@ -32,20 +32,27 @@ async function openPanel(ctx: ExtensionCommandContext): Promise<UiResult | undef
 	});
 }
 
-export default function projectSkillToggle(pi: ExtensionAPI): void {
-	pi.registerCommand("project-skills", {
+export default function skillToggle(pi: ExtensionAPI): void {
+	const handler = async (_args: string, ctx: ExtensionCommandContext) => {
+		try {
+			const result = await openPanel(ctx);
+			if (!result) return;
+			ctx.ui.notify(
+				`Project skill exclusions: ${result.excludedCount}. Run /reload (or restart) to apply.`,
+				"info",
+			);
+		} catch (error) {
+			ctx.ui.notify(error instanceof Error ? error.message : String(error), "error");
+		}
+	};
+
+	pi.registerCommand("skills-toggle", {
 		description: "Exclude or restore global skills for this project only",
-		handler: async (_args, ctx) => {
-			try {
-				const result = await openPanel(ctx);
-				if (!result) return;
-				ctx.ui.notify(
-					`Project skill exclusions: ${result.excludedCount}. Run /reload (or restart) to apply.`,
-					"info",
-				);
-			} catch (error) {
-				ctx.ui.notify(error instanceof Error ? error.message : String(error), "error");
-			}
-		},
+		handler,
+	});
+
+	pi.registerCommand("project-skills", {
+		description: "Alias for /skills-toggle",
+		handler,
 	});
 }
