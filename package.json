@@ -1,5 +1,5 @@
 {
-  "name": "pi-project-skill-toggle",
+  "name": "pi-skills-toggle",
   "version": "1.0.0",
   "description": "Per-project exclude/include of global Pi skills via local shadow stubs",
   "type": "module",
@@ -12,12 +12,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EvilIrving/pi-project-skill-toggle.git"
+    "url": "git+https://github.com/EvilIrving/pi-skills-toggle.git"
   },
   "bugs": {
-    "url": "https://github.com/EvilIrving/pi-project-skill-toggle/issues"
+    "url": "https://github.com/EvilIrving/pi-skills-toggle/issues"
   },
-  "homepage": "https://github.com/EvilIrving/pi-project-skill-toggle#readme",
+  "homepage": "https://github.com/EvilIrving/pi-skills-toggle#readme",
   "files": [
     "index.ts",
     "logic.ts",

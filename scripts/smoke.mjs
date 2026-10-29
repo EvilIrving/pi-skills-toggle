@@ -5,7 +5,7 @@ import path from "node:path";
 import { createHash } from "node:crypto";
 import { getAgentDir, loadSkills, formatSkillsForPrompt } from "@earendil-works/pi-coding-agent";
 
-const MARKER = "pi-project-skill-toggle";
+const MARKER = "pi-skills-toggle";
 const stub = (name) =>
 	`---\nname: ${name}\ndescription: Excluded in this project by ${MARKER}.\ndisable-model-invocation: true\n---\n\n`;
 const hash = (name) => createHash("sha256").update(stub(name)).digest("hex");
@@ -38,7 +38,7 @@ const stubDir = path.join(projectDir, ".pi", "skills", "demo-skill");
 fs.mkdirSync(stubDir, { recursive: true });
 fs.writeFileSync(path.join(stubDir, "SKILL.md"), stub("demo-skill"));
 fs.writeFileSync(
-	path.join(stubDir, ".pi-project-skill-toggle.json"),
+	path.join(stubDir, ".pi-skills-toggle.json"),
 	`${JSON.stringify({ managedBy: MARKER, name: "demo-skill", version: 1, skillSha256: hash("demo-skill") }, null, 2)}\n`,
 );
 
