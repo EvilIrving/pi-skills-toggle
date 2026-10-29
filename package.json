@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Per-project exclude/include of global Pi skills via local shadow stubs",
   "type": "module",
+  "main": "index.ts",
   "keywords": [
     "pi-package",
     "pi-extension",
@@ -26,6 +27,9 @@
     "README_EN.md",
     "LICENSE"
   ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "pi": {
     "extensions": [
       "./index.ts"
@@ -34,7 +38,8 @@
   "scripts": {
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "smoke": "node scripts/smoke.mjs",
-    "typecheck": "tsc -p tsconfig.json --pretty false"
+    "typecheck": "tsc -p tsconfig.json --pretty false",
+    "prepack": "npm test && npm run smoke && npm run typecheck"
   },
   "peerDependencies": {
     "@earendil-works/pi-coding-agent": ">=1.4.0",
@@ -42,6 +47,7 @@
   },
   "devDependencies": {
     "@earendil-works/pi-coding-agent": "^1.4.0",
-    "@earendil-works/pi-tui": "^1.4.0"
+    "@earendil-works/pi-tui": "^1.4.0",
+    "typescript": "^5.7.3"
   }
 }
