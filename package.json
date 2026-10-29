@@ -1,0 +1,47 @@
+{
+  "name": "pi-project-skill-toggle",
+  "version": "1.0.0",
+  "description": "Per-project exclude/include of global Pi skills via local shadow stubs",
+  "type": "module",
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "skills"
+  ],
+  "author": "EvilIrving <dong.yy1916@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EvilIrving/pi-project-skill-toggle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/EvilIrving/pi-project-skill-toggle/issues"
+  },
+  "homepage": "https://github.com/EvilIrving/pi-project-skill-toggle#readme",
+  "files": [
+    "index.ts",
+    "logic.ts",
+    "ui.ts",
+    "README.md",
+    "README_EN.md",
+    "LICENSE"
+  ],
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "scripts": {
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "typecheck": "tsc -p tsconfig.json --pretty false"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">=1.4.0",
+    "@earendil-works/pi-tui": ">=1.4.0"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "^1.4.0",
+    "@earendil-works/pi-tui": "^1.4.0"
+  }
+}
